@@ -1,1 +1,21 @@
 # THD-Project
+name: Build and Test
+
+on:
+  # ... (same as before)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [ x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu ]
+
+    steps:
+      # ... (same as before)
+      - run: cargo build --release --target ${{ matrix.target }}
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: smart_file_analyzer-${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/smart_file_analyzer
